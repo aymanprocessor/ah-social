@@ -1,0 +1,72 @@
+<div>
+    <div class="text-center" style="margin-top: 50px;">
+        <div *ngIf='!response' class="spinner-border text-secondary" role="status"> 
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    
+    <div hidden id="defaultChat" class="chatBox main-font" style="margin: 50px 0 ;overflow: hidden;"  >
+        <div class="row">
+            <div id="part1" class="col-4" >
+                <h3>Chats</h3>
+                <div style="margin-top: 5px;" *ngFor='let chat of allChats' class="chat-parts" routerLink='/chat' [queryParams]='{id:chat?.chat._id}' >
+                    <img src="{{chat?.chat.users[0].image}}" class="im" style="padding: 5px;" >
+                    <div style="display: inline-block;">
+                        <span style="display: block;">{{chat?.chat.users[0].name}}</span> 
+                        <span class="text-muted" >{{chat?.content.length<20 ? chat?.content : (chat?.content.substring(0,20)+'...')}}  </span>
+                    </div>                
+                </div>
+            </div>
+    
+            <div style="width: 20px;"></div>
+    
+            <div class="col"  >
+               <div id="part2">
+                    <div *ngFor='let message of chatMessages' style="margin-top:5px">
+                        <span [class.right]='message?.senderId?._id == currentUserInfo?.id || message?.senderId._ == currentUserInfo?.id ' class="message1">
+                            {{message?.content}}
+                        </span> 
+                    </div>
+                    
+               </div>
+                <form #f='ngForm' (ngSubmit)='sendMsg(f)' style="margin-top: 15px;display: block;">
+                    <input ngModel name="newMessage" type="text" class="inp"  placeholder="Type a message ..."  required>
+                    <button [disabled]='f.invalid' class="btn" style="width: 10%;">
+                        <i style="color: rgb(4, 134, 194);" class="fas fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    
+    
+    <div hidden id="mobileChat" style="margin: 50px 0;" class="main-font">
+        <div id='1stPart' style="border: 2px solid green;margin: 5px;" style="width: 100%;">
+            <h4 style="margin: 0 0 15px 5px;" *ngIf='response == true'>Chats</h4>
+            <div style="margin: 5px 10px ;" *ngFor='let chat of allChats' class="chat-parts" routerLink='/chat' [queryParams]='{id:chat?.chat._id}' >
+                <img src="{{chat?.chat.users[0].image}}" class="im" style="padding: 5px;" >
+                <div style="display: inline-block;">
+                    <span style="display: block;">{{chat?.chat.users[0].name}}</span> 
+                    <span class="text-muted" >{{chat?.content.length<20 ? chat?.content : (chat?.content.substring(0,20)+'...')}}  </span>
+                </div>                
+            </div>
+        </div>
+        <div hidden id='2ndPart' >
+            <div class="mobMsg">
+                <div *ngFor='let message of chatMessages' style="margin-top:5px;overflow: hidden;">
+                    <span style="display: block;" class="message2" [class.right]='message?.senderId?._id == currentUserInfo?.id'>
+                        {{message?.content}}
+                        </span> 
+                </div>
+            </div>
+            <form  #f2='ngForm' (ngSubmit)='sendMsg(f2)' style="margin: 15px 5px;display: block;padding: 5px;">
+                <input ngModel name="newMessage" type="text"  placeholder="Type a message ..." class="inp" required>
+                <button style="width: 10%;" [disabled]='f2.invalid' class="btn">
+                    <i style="color: rgb(4, 134, 194);" class="fas fa-paper-plane"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+</div>

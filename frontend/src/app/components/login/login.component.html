@@ -1,0 +1,32 @@
+<div class="text-center main-font" style="margin-top: 30px;" >
+    <form #f='ngForm'  (ngSubmit)='onSubmit(f)' >
+        <h2>Login</h2>
+        
+        <div *ngIf='response == false' class="text-center">
+            <div class="spinner-border text-secondary" role="status"> 
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf='msgSuccess' class="msgSuccess">
+            {{msgSuccess}}
+        </div>
+        <div *ngIf='msgFailed' class="msgDanger">
+            {{msgFailed}}
+        </div>
+    
+        <div style="margin: 5px;">
+            <i style="margin-right: 5px;" class="fas fa-envelope"></i>
+            <input ngModel name="email" type="email" placeholder="Email" class="form-control" email required>
+            <p class="msgDanger" *ngIf='f.controls.email?.errors?.required && f.controls.email.touched'>This Field Can't Be Empty</p>
+            <p class="msgDanger" *ngIf='f.controls.email?.errors?.email && f.controls.email.touched'>Invalid Format</p>
+        </div>
+    
+        <div style="margin: 5px;">
+            <i style="margin-right: 5px;" class="fas fa-lock"></i>
+            <input ngModel name="password" type="password" placeholder="Password" class="form-control" required>
+            <p class="msgDanger" *ngIf='f.controls.password?.errors?.required && f.controls.password.touched'>This Field Can't Be Empty</p>
+        </div>
+        <button  [disabled]='f.invalid' class="btn btn-primary" style="margin-top: 2px;"> Login </button>
+    </form>
+</div>

@@ -1,0 +1,18 @@
+<div style="margin-top: 30px;" class="main-font">
+    <div class="text-center">
+        <div *ngIf='!response' class="spinner-border text-secondary" role="status"> 
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <div style="background-color: rgb(236, 235, 235);" *ngIf='friendRequests.length != 0' >
+        <div style="cursor: pointer;background-color: rgb(226, 225, 225);padding: 5px;border-bottom: 2px solid white;"  *ngFor='let fRequest of friendRequests'>
+            <img class="im" src="{{fRequest?.image}}" alt="">
+            <a class="link" routerLink='/profile' [queryParams]={id:fRequest?._id}>{{fRequest.name}}</a>
+            <span class="btn btn-danger" (click)='requestAction("reject",fRequest)'>reject</span>
+            <span class="btn btn-success" (click)='requestAction("confirm",fRequest)' >accept</span>
+        </div>
+    </div>
+    <div *ngIf='friendRequests.length == 0' class="text-center" style="margin-top: 30px;">
+        <h4>No friend requests </h4>
+    </div>
+</div>

@@ -1,0 +1,66 @@
+<div class="container main-font" style="margin-top: 40px;">
+    <h3 style="border-bottom: 2px double gray;padding: 5px;">Update Profile</h3>
+
+    <form #f='ngForm' (ngSubmit)='save(f)'>
+        <div *ngIf='userInfo?.name'>
+            <div class="mt">
+                <span class="sp">name</span>
+                <input ngModel name="name" type="text" class="form-control myInp" ngModel='{{userInfo.name}}' readonly >
+            </div>
+            <div class="mt">
+                <span class="sp">email</span>
+                <input ngModel name="email"  type="text" class="form-control myInp" ngModel='{{userInfo.email}}' email required >
+            </div>
+    
+            <div class="mt">
+                <span class="sp" >address</span>
+                <input  name="address"   type="text" class="form-control myInp" ngModel='{{userInfo.address}}' required >
+            </div>
+
+            <div class="mt">
+                <span class="sp" >current password</span>
+                <input  name="oldPass"  type="password" class="form-control myInp" ngModel >
+            </div>
+
+            <div class="mt">
+                <span class="sp" >new password</span>
+                <input  name="newPass"   type="password" class="form-control myInp" ngModel >
+            </div>
+
+    
+            <div>
+                <span style="width: fit-content;font-weight: 600;">profile picture</span>
+                <div class="mt" style="display: inline-block;" >
+                    <label class="custom-file-upload">
+                        <input class="inp1"  name="pImage" type="file" (change)='selectImage($event)' />
+                        <img src="{{userInfo.image}}" style="margin-left: 5px; width: 50px;height: 50px;border-radius: 50%;">
+                        <span *ngIf='pImageName' style="margin-left: 2px;">{{pImageName}}</span>
+                    </label>
+                </div>
+            </div>
+    
+            <div>
+                <span style="width: fit-content;font-weight: 600;">cover picture</span>
+                <div class="mt" style="display: inline-block;" >
+                    <label class="custom-file-upload">
+                        <input class="inp1" name="cImage" type="file" (change)='selectImage2($event)' />
+                        <img src="{{userInfo?.cover}}" style="margin-left: 5px; width: 60px;height: 60px;border-radius: 5px;">
+                        <span *ngIf='cImageName' style="margin-left: 2px;">{{cImageName}}</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="text-center" style="margin: 10px auto;">
+                <div *ngIf='response == false' class="spinner-border text-secondary" role="status"> 
+                    <span class="sr-only">Loading...</span>
+                </div>
+            </div>
+
+            <button class="btn btn-primary" 
+            [disabled]='f.invalid || (f.controls?.newPass?.value == "" && f.controls?.oldPass?.value != "") ||
+            (f.controls?.oldPass?.value == "" && f.controls?.newPass?.value != "" )   '
+            >save</button>
+
+        </div>
+    </form>
+</div>

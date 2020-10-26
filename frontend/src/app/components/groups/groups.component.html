@@ -1,0 +1,45 @@
+<div class="text-center" style="margin-top: 60px;">
+    <div *ngIf='!response' class="spinner-border text-secondary" role="status"> 
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+
+<div class="main-font" style="margin-top: 60px;">
+    
+<div [hidden]='chatId' style="margin-bottom: 20px;">
+    <button routerLink='/groups/new'  class="btn btn-secondary" style="display: block; margin-left: auto;padding: 4px;margin-right: 2px;" >New Group</button>
+</div>
+
+<div *ngIf='!chatId'>
+    <div class="container">
+        <div class="row text-center">
+            <div *ngFor='let group of userGroups' class="col-md-4 col-lg-3 card" style="width: 14rem;margin: 10px 5px ;margin: 10px auto;" >
+                <img src="https://res.cloudinary.com/x4md98/image/upload/v1603749414/group_ga8k2y.png" class="card-img-top"  alt="...">
+                <div class="card-body">
+                  <h5 class="card-title">Name : {{group?.name}}</h5>
+                  <h5 style="display: inline-block;margin-right: 5px;">Admin : </h5> <a routerLink='/profile' [queryParams]='{id:group?.admin._id}' class="h5" >{{group?.admin.name}}</a>
+                  <a style="width: 100%;margin: 0;margin-top: 5px;background-color: rgb(0, 88, 219);"  routerLink='/groups' [queryParams]='{id:group.groupId}' class="btn btn-primary" >Enter Chat</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div *ngIf='chatId' style="padding: 5px;" >
+    <div  *ngFor='let message of chatMessages' [class.right]='message?.senderId?._id == currentUserInfo?.id' >
+        <img *ngIf='!(message?.senderId?._id == currentUserInfo?.id)' src="{{message?.senderId?.image}}" class="commenter-img"  alt="">
+        <div style="display: inline-block;" [class.message]='!(message?.senderId?._id == currentUserInfo?.id)'>
+            <span *ngIf='!(message?.senderId?._id == currentUserInfo?.id)' style="font-weight: bold;display: block;">{{message?.senderId?.name}}</span> 
+            <span class="ssss" style="margin: 0px;padding: 0;max-width:80% ;">{{message?.content}} </span>
+        </div>
+    </div>
+    <form  #f2='ngForm' (ngSubmit)='sendMsg(f2)' style="margin: 15px 5px;display: block;padding: 5px;">
+        <input ngModel name="newMessage" type="text"  placeholder="Type a message ..." class="inp" required>
+        <button style="width: 10%;" [disabled]='f2.invalid' class="btn">
+            <i style="color: rgb(4, 134, 194);" class="fas fa-paper-plane"></i>
+        </button>
+    </form>
+</div>
+</div>

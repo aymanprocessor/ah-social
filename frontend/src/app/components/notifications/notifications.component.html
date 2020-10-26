@@ -1,0 +1,17 @@
+<div style="margin-top: 30px;" class="main-font">
+    <div class="text-center">
+        <div *ngIf='!response' class="spinner-border text-secondary" role="status"> 
+            <span class="sr-only">Loading...</span>
+        </div>
+        <div *ngIf='response && notifications.length == 0'> 
+            <h3>There are no notifications </h3>
+        </div>
+    </div>
+    <div *ngIf='notifications.length != 0' style="background-color: rgb(236, 235, 235);" >
+        <div class="notf" [class.notViewd]='!notification.isViewed' (click)='notificationViewed(notification._id)' *ngFor='let notification of notifications' [routerLink]="['/posts']" [queryParams]="{id:notification.postId}" queryParamsHandling="merge">
+            <span style="margin-right: 3px;" *ngIf='notification.notification.includes("liked")'><i style="color: rgb(80, 147, 248);" class="fas fa-thumbs-up"></i></span> 
+            <span style="margin-right: 3px;" *ngIf='notification.notification.includes("commented")'><i style="color: rgb(31, 150, 31);" class="fas fa-comment-dots"></i></span> 
+            <span style="font-size: 1.05em;margin-left: 5px;">{{notification.notification}}</span>
+        </div>
+    </div>
+</div>

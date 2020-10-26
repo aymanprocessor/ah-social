@@ -1,0 +1,24 @@
+.card-img-top{
+    width: 100%;
+}
+.card {
+    padding: 0;
+}
+.btn {
+    border-radius: 0;
+}
+
+.btn-primary {
+    background-color: rgb(3, 107, 226);
+}
+.btn-danger {
+    background-color: red;
+}
+
+.card{
+    box-shadow:  -1px -2px 5px 3px grey;
+}
+
+.card a {
+    margin: 0;
+}

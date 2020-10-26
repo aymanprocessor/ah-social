@@ -1,0 +1,81 @@
+nav {
+    background-color: white;
+    box-shadow: 1px -2px 5px 5px rgb(223, 223, 223);
+}
+.sp2{
+    color: red;
+}
+
+span {
+    font-weight: bold;
+}
+
+.navbar-brand{
+    font-size: 22px;
+    font-weight: bolder;
+    padding-top: 0;
+    padding-bottom: 0;
+}
+
+.nav-link {
+    padding: 0 1rem;
+}
+
+.font-edit1{
+    font-size: 20px;
+}
+
+a:last-of-type {
+    cursor: pointer;
+}
+
+.notViewd{
+    background-color: rgb(201, 195, 195);
+}
+
+.red{
+    color:  red;
+}
+.im{
+    height: 50px;
+    width: 50px;
+    border-radius:50%;
+    vertical-align: top;
+    
+}
+.chat-parts{
+    cursor: pointer;
+    padding: 0;
+}
+.text-muted{
+    font-weight: 300;
+}
+
+.hide {
+    display: none;
+}
+
+@media (max-width: 369px)  {
+    .nav-item i {
+        font-size: 1.03em;
+        font-weight: 900;
+    }
+}
+
+@media (min-width: 369px) and (max-width: 373px)  {
+    .nav-item i {
+        font-size: 1.1em;
+    }
+}
+
+@media (min-width: 374px) and (max-width: 385px)  {
+    .nav-item i {
+        font-size: 1.2em;
+    }
+}
+
+@media (min-width: 386px) and (max-width: 473px)  {
+    .nav-item i {
+        font-size: 1.25em;
+    }
+}

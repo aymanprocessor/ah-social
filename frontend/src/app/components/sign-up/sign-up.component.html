@@ -1,0 +1,61 @@
+<div style="margin-top: 30px;" class="text-center main-font">
+    <form #f='ngForm' (ngSubmit)='onSubmit(f)' >
+    
+        <h2>Sign-Up</h2>
+
+        <div *ngIf='response == false' class="text-center">
+            <div class="spinner-border text-secondary" role="status"> 
+                <span class="sr-only">Loading...</span>
+            </div>
+        </div>
+
+        <div *ngIf='msgSuccess' class="msgSuccess">
+            {{msgSuccess}}
+        </div>
+
+        <div *ngIf='msgFailed' class="msgDanger" >
+            {{msgFailed}}
+        </div>
+
+        <div class="text-center center">
+            <i class="fas fa-signature mt5"></i>
+            <input ngModel name="name" type="text" placeholder="Name" class="form-control" required >
+            <p class="msgDanger" *ngIf='f.controls.name?.errors?.required && f.controls.name.touched'>This Field Can't Be Empty</p>
+        </div>
+    
+        <div>
+            <i class="fas fa-envelope mt5"></i>
+            <input ngModel name="email" type="email" placeholder="Email" class="form-control" email required>
+            <p class="msgDanger" *ngIf='f.controls.email?.errors?.required && f.controls.email.touched'>This Field Can't Be Empty</p>
+            <p class="msgDanger" *ngIf='f.controls.email?.errors?.email && f.controls.email.touched'>Invalid Format</p>
+        </div>
+    
+        <div>
+            <i class="fas fa-child mt5"></i>
+            <input ngModel name="age" type="number" placeholder="Age" class="form-control" required>
+            <p class="msgDanger" *ngIf='f.controls.age?.errors?.required && f.controls.age.touched'>This Field Can't Be Empty</p>
+        </div>
+    
+        <div>
+            <i class="fas fa-map-marker-alt mt5"></i>
+            <input ngModel name="address" type="text" placeholder="address" class="form-control" required>
+            <p class="msgDanger" *ngIf='f.controls.address?.errors?.required && f.controls.address.touched'>This Field Can't Be Empty</p>
+        </div>
+    
+        <div>
+            <i class="fas fa-lock mt5"></i>
+            <input ngModel name="password" type="password" placeholder="Password" class="form-control" required>
+            <p class="msgDanger" *ngIf='f.controls.password?.errors?.required && f.controls.password.touched'>This Field Can't Be Empty</p>
+        </div>
+        
+    
+        <div>
+            <i class="fas fa-key mt5"></i>
+            <input ngModel name="confirmPass" type="password" placeholder="Confirm Password" class="form-control" required>
+            <p class="msgDanger" *ngIf='f.controls.confirmPass?.errors?.required && f.controls.confirmPass.touched'>This Field Can't Be Empty</p>
+            <p class="msgDanger" *ngIf='f.controls.confirmPass?.value != f.controls.password?.value  && f.controls.confirmPass.touched'>Passwords Must Be Equal</p>
+        </div>
+    
+        <button [disabled]='f.invalid' class="btn btn-primary" style="margin-top: 2px;">Create Account</button>
+    </form>
+</div>

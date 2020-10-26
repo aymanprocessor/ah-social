@@ -1,0 +1,90 @@
+<nav class="navbar navbar-expand navbar-light main-font">
+    <a class="navbar-brand" href="/">
+        <span class="sp1">ah-</span>
+        <span class="sp2">social</span>
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    
+  
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav ml-auto">
+
+        <li *ngIf='!isUser' class="nav-item font-edit1">
+          <a class="nav-link" routerLink="/login" routerLinkActive ='active' > Login </a>
+        </li>
+        <li *ngIf='!isUser' class="nav-item font-edit1">
+          <a class="nav-link" routerLink="/sign-up" routerLinkActive ='active' > Sign-Up </a>
+        </li>
+        <li *ngIf='isUser' class="nav-item">
+          <a class="nav-link" routerLink="/" routerLinkActive ='active'  [routerLinkActiveOptions] ='{exact:true}'><i class="fas fa-home fa-2x"></i></a>
+        </li>
+        <li *ngIf='isUser' class="nav-item"  >
+          <span class="nav-link">
+            <div class="dropdown" >
+              <span  role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i id="ico1" (click)='navigate("notifications","notf","ico1");'  class="far fa-bell fa-2x" ></i>
+              </span>
+              <div id="notf" style="background-color: rgb(236, 235, 235);padding: 0;" [class.hide]='notifications.length == 0' class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a style="padding: 5px; padding-left:5px;margin: 0;" [class.notViewd]='!notification.isViewed' (click)='notificationViewed(notification._id)' *ngFor='let notification of notifications' class="dropdown-item" [routerLink]="['/posts']" [queryParams]="{id:notification.postId}" queryParamsHandling="merge">
+                  <span style="margin-right: 3px;" *ngIf='notification.notification.includes("liked")'><i style="color: rgb(80, 147, 248);" class="fas fa-thumbs-up"></i></span> 
+                  <span style="margin-right: 3px;" *ngIf='notification.notification.includes("commented")'><i style="color: rgb(31, 150, 31);" class="fas fa-comment-dots"></i></span> 
+                  {{notification.notification}}
+                </a>
+              </div>
+            </div>
+          </span>
+        </li>
+        <li *ngIf='isUser' class="nav-item">
+          <span class="nav-link">
+            <div class="dropdown">
+              <span  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i id='ico2' (click)='navigate("friend-requests","freq","ico2");' [class.red] = 'friendRequests.length !=0' class="far fa-user-friends fa-2x"></i>
+              </span>
+              <div id="freq" style="background-color: rgb(236, 235, 235);padding: 0;" *ngIf='friendRequests && friendRequests.length != 0' class="dropdown-menu" aria-labelledby="dropdownMenuLink">
+                <a *ngFor='let request of friendRequests' class="dropdown-item" [routerLink]="['/profile']" [queryParams]="{id:request._id}" queryParamsHandling="merge">
+                  {{request.name}}
+                </a>
+              </div>
+            </div>
+          </span>
+        </li>
+        
+        <li *ngIf='isUser' class="nav-item">
+          <span class="nav-link">
+            <div class="dropdown">
+              <span  href="#" role="button" id="dropdownMenuLink" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                <i id="ico3" (click)='navigate("chat","msgs","ico3")' [class.red]='unseenMessages != 0 && iamSender == false' class="fab fa-facebook-messenger fa-2x"></i>
+              </span>
+              <div id="msgs" [class.hide]='!(newMessages && newMessages.length != 0)' class="dropdown-menu" style="padding: 0;" aria-labelledby="dropdownMenuLink" >
+                <div  *ngFor='let message of newMessages' class="chat-parts dropdown-item" [routerLink]="[message.type =='group' ? '/groups' : '/chat']" [queryParams]={id:message?.chat} >
+                  <img  class="im" src="{{message?.senderId?.image}}" alt="">
+                  <div style="display: inline-block;">
+                    <span style="display: block;">{{message?.senderId.name}}</span> 
+                    <span class="text-muted" > 
+                      {{ message.content.length <=8 ? message.content : message.content.substring(0,8)+'...' }}
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </span>
+        </li>
+        <li *ngIf='isUser' class="nav-item">
+          <a class="nav-link" routerLink="/profile"><i class="far fa-user-circle fa-2x"></i></a>
+        </li>
+        <li *ngIf='isUser' class="nav-item">
+          <a class="nav-link" routerLink="/find-friends"><i class="fas fa-search fa-2x"></i></a>
+        </li>
+        <li *ngIf='isUser' class="nav-item">
+          <a class="nav-link" (click)='logout()' > <i class="fas fa-sign-out-alt fa-2x"></i> </a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+
+  
+
+ 

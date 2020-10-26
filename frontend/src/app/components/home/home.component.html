@@ -1,0 +1,133 @@
+
+
+
+
+<div class="text-center" *ngIf='response==false' >
+    <div class="spinner-border text-secondary" style="margin-top: 50px;" role="status">
+        <span class="sr-only">Loading...</span>
+    </div>
+</div>
+
+
+<div >
+    <div *ngIf='currentUserInfo' [hidden]='checkWindow()'  style="margin-top: 50px;" class="container main-font text-center">
+        <div class="quarter" routerLink='/friends' ><i class="fal fa-user-friends icon"></i><span>Friends</span></div>
+        <div class="quarter" routerLink='/chat'><i class="fal far fa-comments icon"></i><span>Chats</span></div>
+        <div class="quarter" routerLink='/groups'><i class="far fa-users icon"></i><span>Groups</span></div> 
+        <div class="quarter" routerLink='/online'><i style="color: green;" class="fas fa-circle icon"></i><span>Online</span></div>
+    </div>
+    
+    
+    <div *ngIf='currentUserInfo' class="main-font" style="margin-top: 30px;overflow: hidden;">
+    
+        <!-- start of row -->
+        <div class="row">
+    
+            <!-- start of sideMenu -->
+            <div id="sideMenu" class="col-2 fixed" style="z-index: 2;"  >
+               <h5 style="padding-bottom: 5px; margin-bottom: 0;font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;border-bottom: 2px solid rgb(73, 169, 207) ;">SHORTCUTS</h5> 
+               <span routerLink='/friends' class="options"><i  class="fal fa-user-friends icon"></i>Friends</span>
+               <span routerLink='/chat' class="options"><i class="fal far fa-comments icon"></i>Chats</span>
+               <span routerLink='/groups' class="options"><i class="far fa-users icon"></i>Groups</span>
+            </div>
+            <!-- end of sideMenu -->
+    
+            <div [hidden]='!checkWindow()'  class="col-2 space"></div>
+    
+    
+    
+    
+            <div *ngIf='response && posts.length ==0' class="text-center" style="margin: 10px auto;">
+                <h5>There are no posts</h5>
+            </div>
+            <!-- start of posts section -->
+            <div id="postsSection" *ngIf='posts && posts.length !=0' class="col">
+    
+                <h4 class="container post" style="border: hidden;margin-bottom: 10px; margin: 10px auto 25px auto;width: fit-content;" >Recent Posts</h4>
+    
+    
+                <!-- start of post  -->
+                <div *ngFor='let post of posts' class="container post" style="background-color: white;">
+                    <!-- start of post header -->
+                    <img src="{{post?.authorId?.image}}" class="post-img" style="margin-right: 0;border: hidden;" alt="">
+                    <div style="display: inline-block;">
+                        <a style="color: black;" class="bold" routerLink='/profile' [queryParams]='{id:post?.authorId?._id}'>{{post.authorId.name}}</a>  <br>
+                        <span style="margin-left: 5px;">{{post.date|date:'medium'}}</span>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <p #oldText id="post{{post._id}}">{{post.text}}</p>
+                        <div class="text-center">
+                            <img *ngIf='post.image' src="{{post.image}}" style="max-width: 100%;max-height: 200px" >
+                        </div>
+                    </div>
+                    <i class="far fa-thumbs-up "></i> {{post.likes?.length}}        
+                    <hr>
+                    <!-- end of post header -->
+                    <!-- start of like and comment buttons -->
+                    <div style="margin-top: 5px;">
+                        <span [class.blue]='checkLike(post._id)'
+                        (click)='addLike(post.authorId._id,post._id)' id="btn_{{post._id}}" class="bold likeBtn"><i class="far fa-thumbs-up "></i> Like</span>
+                        <span class="bold" style="margin-left: 20px;" (click)='showComments(post._id)' > <i class="far fa-comment "></i> Comment</span>
+                    </div>
+                    <hr>
+                    <!-- end of like and comment buttons -->
+                    <!-- start of comments section  -->    
+                    <div hidden id="comm_{{post._id}}">
+                        <!-- start of comments  -->
+                        <div *ngIf='post.comments && post.comments.length !=0'>
+                            <div *ngFor='let comment of post.comments' style="margin-top:7px;">
+                                <img src="{{comment?.commenterId?.image}}" class="commenter-img"  alt="">
+                                <div style="min-width: 50%;" class="comment">
+                                    <span style="font-weight: bold;display: block;">{{comment?.commenterId?.name}}</span> 
+                                    <span class="ssss"  style="margin: 0px;padding: 0;max-width:80% ;" id="{{comment._id}}">{{comment?.text}} </span>
+                                </div>
+                                <div style="display: inline-block;" hidden id="new{{comment._id}}">
+                                    <input value='{{comment.text}}' #newComment type="text" style="border-radius: 5px;margin:2px 5px;border-color: grey;">
+                                    <span class="save-comm-btn" (click) ='editComment(comment._id,post._id,newComment.value)' >save</span>
+                                </div>
+                                <div *ngIf='comment?.commenterId?._id == currentUserInfo._id' style="display: inline-block;">
+                                    <i class="far fa-trash-alt" style="float: right;font-size: small;" (click)='deleteComment(comment._id,post._id,post.authorId._id)' ></i>
+                                    <i class="far fa-edit" style="float: right;font-size: small;margin-right: 2px;" (click)='showEditCommentBox(comment._id)' ></i>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- end of comments  -->
+                        <!-- start of comment input -->
+                        <div>
+                            <img src="{{currentUserInfo?.image}}" class="commenter-img" style="margin-right: 0;border: hidden;" alt="">
+                            <input #comm class="comment" type="text" placeholder="Write a comment ..." style="margin-top: 7px;">
+                            <span (click)='addComment(post._id,comm.value,post.authorId._id);comm.value="";' style="margin-left: 5px;" class="btn post-btn">
+                                <i class="fas fa-location-circle"></i>    
+                            </span>
+                        </div>
+                        <!-- end of comment input -->
+                    </div>
+                    <!-- end of comments section  --> 
+                </div>  
+                <!-- end of post -->
+            </div>
+            <!-- end of posts section -->
+    
+    
+    
+    
+    
+            
+            <!-- start of online section -->
+            <div id="online"   class="col-2 fixed"  style="z-index: 2;"  >
+                <h5>Online Friends <span>({{onlineFriends.length}})</span></h5>
+                <div *ngFor='let friend of onlineFriends'>
+                    <span  routerLink='/profile' [queryParams]={id:friend?._id} style="font-size: large;cursor: pointer;">{{friend.name}}</span> <span style="float: right;">
+                        <i style="color: green;font-size: .5em;"  class="fas fa-circle"></i>
+                    </span>
+                </div>
+            </div>
+            <!-- end of online section -->
+            <div [hidden]='!checkWindow()' class="col-2 space"></div>
+    
+    
+        </div>
+        <!-- end of row -->
+    </div>
+</div>
+

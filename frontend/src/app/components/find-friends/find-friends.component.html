@@ -1,0 +1,28 @@
+<div style="margin-top: 40px;" class="main-font">
+    <input #inp type="text" class="form-control" style="width: 90%;margin: 0 auto;border-radius: 10px;"
+    (keyup)='search(inp.value)'
+     placeholder="Search for friend" >
+</div>
+
+<div *ngIf='response' class="spinner-border text-secondary" style="margin-top: 10px;" role="status"> 
+    <span class="sr-only">Loading...</span>
+</div>
+
+
+
+<div *ngIf='searchedArray.length != 0' class="container main-font">
+    <div *ngFor='let user of searchedArray' style="cursor: pointer;">
+        <div style="margin-top: 10px;" >
+            <img src="{{user?.image}}" style="width: 30px;height: 30px;border-radius: 50%;">
+            <a routerLink='/profile' [queryParams]='{id:user?._id}' style="padding-left: 5px;color: black;">{{user?.name}}</a>
+            <i id="addBtn_{{user._id}}" (click)='action(user._id,"add")' [hidden]='checkFriend(user._id) || checkSent(user._id) || checkRequest(user._id)' style="float: right;margin: 7px auto;font-weight: 400;" class="fal fa-user-plus"></i>
+            <i [hidden]='!checkFriend(user._id)'  style="float: right;margin: 7px auto;margin-right: 5px;" routerLink='/chat' [queryParams]='{id:getChatId(user._id)}' class="fab fa-facebook-messenger"></i>
+            <button [hidden]='!checkSent(user._id)' id="cancelBtn_{{user._id}}" (click)='action(user._id,"cancel")' style="border-radius: 5px;padding: 2px;float: right;font-size: small;background-color: red;" class="btn btn-danger">cancel request</button>
+            <button [hidden]='!checkRequest(user._id)' id="viewProfileBtn_{{user._id}}" routerLink='/profile' [queryParams]='{id:user._id}'  style="border-radius: 5px;padding: 2px;float: right;font-size: small;border: 2px solid gray;" class="btn">view profile</button>
+        </div>
+    </div>
+</div>
+
+<div class="container main-font text-center" style="margin-top: 15px;" *ngIf='searchedArray.length == 0 && inp.value != "" ' >
+    <h5>There are no results matches your input <i class="far fa-frown"></i></h5> 
+</div>

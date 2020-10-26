@@ -1,0 +1,72 @@
+.chatBox {
+    margin-top: 50px;
+    height: fit-content;
+    padding: 0px 5px;
+}
+
+
+
+ 
+
+.message ,.right {
+    display: inline-block;
+    overflow-wrap: break-word;
+    margin: 5px;
+    max-width: 60%;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 7px;
+    word-break: break-all;
+    background-color: rgb(202, 202, 202);
+
+}
+
+.right {
+    display: block;
+    margin-left: auto;
+    background-color: rgb(15, 151, 230);
+}
+
+.im{
+    height: 50px;
+    width: 50px;
+    border-radius:50%;
+    vertical-align: top;
+    
+}
+
+.chat-parts{
+    border: 2px solid purple ;
+    border-radius: 10px;
+    cursor: pointer;
+}
+
+
+.commenter-img {
+    width: 30px;
+    height: 30px;
+    vertical-align: super;
+    border-radius: 50%;
+    padding: 0;
+    margin:0 5px 0 0;
+    border: hidden;
+    align-content: center;
+}
+
+
+
+.ssss{
+    word-wrap: break-word;
+}
+
+.inp{
+    display: inline-block;
+    width: 90%;
+    border-radius: 5px;
+    box-shadow: -3px 3px 3px 2px gray;
+}
+
+.card{
+    border-radius: 10px;
+    box-shadow: -1px 2px 5px 2px gray;
+}

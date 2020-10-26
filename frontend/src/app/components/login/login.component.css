@@ -1,0 +1,30 @@
+form input {
+    margin: 4px auto ;
+    width: 40%;
+}
+
+.msgSuccess,.msgDanger{
+    width: 42%;
+    margin: 0 auto;
+    color: white;
+    background-color: green;
+    padding: 5px;
+}
+
+
+.msgDanger{
+    background-color: rgb(214, 10, 10);
+}
+
+@media (max-width:800px){
+    form input {
+        width: 70%;
+    } 
+    .msgSuccess,.msgDanger {
+        width: 75%;
+    }
+}
+
+.form-control{
+    display: inline-block;
+}

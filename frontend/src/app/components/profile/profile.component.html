@@ -1,0 +1,158 @@
+<div class="main-font" style="overflow: hidden;">
+    <!-- start of cover container -->
+    <div *ngIf='profileUserInfo' class="parent-container container" >
+        <img class="cover" src="{{profileUserInfo?.cover}}" >
+        <img class="profile-img" src="{{profileUserInfo?.image}}" >
+    </div>
+    <!-- end of cover container -->
+    
+    <!-- profile name -->
+    <div class="text-center">
+        <h2>{{profileUserInfo?.name}}</h2>
+    </div>
+    <div style="margin: 20px 0;" class="text-center"  >
+        <span (click)='addFriend()' *ngIf='relation=="noRelation" && this.visitorInfo?._id != this.profileUserId' class="btn prim1" id="addBtn">
+            add friend <i  style="margin-left: 4px;" class="far fa-user-plus"  ></i>
+        </span>
+        <span class="btn danger1"  *ngIf='relation=="sentReq" && this.visitorInfo?._id != this.profileUserId'  id="cancelBtn"(click)='cancelRequest()' >cancel request</span>
+        <span class="btn prim1" *ngIf='relation=="recieveReq" && this.visitorInfo?._id != this.profileUserId'  id="confirmBtn"(click)='confirmRequest()' >confirm request</span>
+        <span class="btn danger1" *ngIf='relation=="recieveReq" && this.visitorInfo?._id != this.profileUserId'  id="rejectBtn"(click)='rejectRequest()'  >reject request</span>
+        <span class="btn prim1" *ngIf='relation=="friends"  && this.visitorInfo?._id != this.profileUserId' id="msgBtn" routerLink='/chat' [queryParams]={id:chatId} ><i class="fab fa-facebook-messenger"></i> message</span>
+        <span class="btn danger1" *ngIf='relation=="friends"  && this.visitorInfo?._id != this.profileUserId' id="removeBtn"  (click)='removeFriend()' > <i class="fas fa-user-times" style="margin-right: 5px;"></i> Unfriend</span>
+        <span class="btn"  style="border: 2px solid gray;box-shadow: 1px 1px 4px 1px gray;font-weight: 600;" *ngIf='this.visitorInfo?._id == this.profileUserId' routerLink='/update-profile' > <i class="far fa-user-edit" style="margin-right: 3px;"></i> profile info</span>
+
+    </div>
+    <hr class="container" style="margin: 0 10px 18px 10px;">
+    <!-- profile name -->
+
+    
+
+    <div class="text-center" style="margin: 10px auto;">
+        <div *ngIf='!response' class="spinner-border text-secondary" role="status"> 
+            <span class="sr-only">Loading...</span>
+        </div>
+    </div>
+    <!-- start of post form -->
+    <div *ngIf='this.visitorInfo?._id == this.profileUserId' >
+        <form style="margin-top: 10px;" class="container post"  #f='ngForm' (ngSubmit)='addNewPost(f)'>
+            <div class="row">
+                 <div class="col-2">
+                     <img class="post-img" src="{{profileUserInfo?.image}}" >
+                 </div>
+                 <div  class="col">
+                     <textarea ngModel name='postText' rows="2" placeholder="What's on your mind ?" required></textarea>
+                 </div>
+            </div>
+            <div class="row">
+                 <div class="col" >
+                     <button [disabled]='f.invalid' style="float: right;margin-left: 5px;" class="btn post-btn">
+                         post
+                     </button>
+                     <div class="mt" >
+                        <label class="custom-file-upload">
+                            <input class="inp1" ngModel name="imageFile" type="file" style="float: right;" (change)='selectImage($event)'>
+                            <i class="fas fa-upload"></i> Image 
+                        </label>
+                        <span style="font-size: small;" *ngIf='postImageName'>{{postImageName}}</span>
+                    </div>
+                 </div>
+            </div>
+         </form>
+    </div>
+    <!-- end of post form -->
+
+
+    <!-- start of posts section -->
+      <div *ngIf='userPosts && userPosts.length !=0'>
+
+        <div *ngFor='let post of userPosts' class="container post" style="border: 1px solid grey;background-color: white;">
+
+            <!-- start of post header -->
+            <img src="{{profileUserInfo?.image}}" class="post-img" style="margin-right: 0;border: hidden;" alt="">
+            <div style="display: inline-block;">
+                <span class="bold">{{profileUserInfo?.name}}</span> <br>
+                <span style="margin-left: 5px;">{{post.date|date:'medium'}}</span>
+            </div>
+            <div *ngIf='visitorInfo?._id == profileUserId' style="display: inline-block;float: right;">
+                <div class="dropdown">
+                    <span style="cursor: pointer;"  class="dropdown-toggle"  id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    </span>
+                    <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                      <a class="dropdown-item" (click)='showBox(oldText,ff)'>
+                          edit
+                      </a>
+                      <a class="dropdown-item" (click)='deletePost(ff)' >delete</a>
+                    </div>
+                  </div>
+            </div>
+            <div style="margin-top: 10px;">
+                
+                <form #ff  hidden #f='ngForm' id="{{post._id}}" (ngSubmit)='editPost(f,oldText,ff)' >
+                    <textarea [(ngModel)]='post.text' name="newText" style="width: 70%;margin-right: 0;"  rows="2"></textarea>
+                    <button style="margin-left: 5px;margin-bottom: 10px;" class="btn post-btn" >
+                        save
+                    </button>
+                </form>
+                    
+                <p #oldText id="post{{post._id}}">{{post.text}}</p>
+                <div class="text-center">
+                    <img *ngIf='post.image' src="{{post.image}}" style="max-width: 100%;max-height: 200px" >
+                </div>
+            </div>
+            <i class="far fa-thumbs-up "></i> {{post.likes?.length}}        
+            <hr>
+            <!-- end of post header -->
+    
+            <!-- start of like and comment buttons -->
+            <div style="margin-top: 5px;">
+                <span [class.blue]='checkLike(post._id)'
+                 (click)='addLike(post._id)' id="btn_{{post._id}}" class="bold likeBtn"><i class="far fa-thumbs-up "></i> Like</span>
+                <span class="bold" style="margin-left: 20px;" (click)='showComments(post._id)' > <i class="far fa-comment "></i> Comment</span>
+            </div>
+            <hr>
+            <!-- end of like and comment buttons -->
+    
+            <div hidden id="comm_{{post._id}}">
+                <!-- start of comments  -->
+            <div *ngIf='post.comments && post.comments.length !=0'>
+                <div *ngFor='let comment of post.comments' style="margin-top:7px;">
+                    <img src="{{comment?.commenterId?.image}}" class="commenter-img"  alt="">
+                    <div class="comment">
+                        <span style="font-weight: bold;display: block;">{{comment?.commenterId?.name}}</span> 
+                        <span  style="margin: 0px;padding: 0;" id="{{comment._id}}">{{comment?.text}} </span>
+                    </div>
+                    <div style="display: inline-block;" hidden id="new{{comment._id}}">
+                        <input value='{{comment.text}}' #newComment type="text" style="border-radius: 5px;margin:2px 5px;border-color: grey;">
+                        <span class="save-comm-btn" (click) ='editComment(comment._id,post._id,newComment.value)' >save</span>
+                    </div>
+                    <div *ngIf='comment?.commenterId?._id == visitorInfo?._id' style="display: inline-block;">
+                        <i class="far fa-trash-alt" style="float: right;font-size: small;" (click)='deleteComment(comment._id,post._id)' ></i>
+                        <i class="far fa-edit" style="float: right;font-size: small;margin-right: 2px;" (click)='showEditCommentBox(comment._id)' ></i>
+                    </div>
+                </div>
+            </div>
+            <!-- end of comments  -->
+    
+             <!-- start of comment input -->
+            <div>
+                <img src="{{visitorInfo?.image}}" class="commenter-img" style="margin-right: 0;border: hidden;" alt="">
+                <input #comm class="comment" type="text" placeholder="Write a comment ..." style="margin-top: 7px;">
+                <button (click)='addComment(post._id,comm.value);comm.value="";' style="margin-left: 5px;" class="btn post-btn">
+                    <i class="fas fa-location-circle"></i>    
+                </button>
+            </div>
+             <!-- end of comment input -->
+            </div>
+    
+        </div>  
+      </div>
+      <div *ngIf='userPosts.length == 0' class="text-center">
+        <h3>There Are No Posts</h3>
+      </div>
+    <!-- end of posts section -->
+    
+</div>
+
+
+
+
